@@ -22,6 +22,7 @@ var cnt=document.getElementById("dcount"),none=document.getElementById("dnone");
 function apply(){var n=0;cards.forEach(function(c){var ok=(f==="all"||c.dataset.cat===f)&&(!q||c.dataset.code.toLowerCase().indexOf(q)>-1);c.hidden=!ok;if(ok)n++});cnt.textContent="Showing "+n+" design"+(n===1?"":"s");none.hidden=n>0}
 var pills=[].slice.call(document.querySelectorAll(".pill"));
 pills.forEach(function(p){p.onclick=function(){f=p.dataset.f;pills.forEach(function(o){o.classList.toggle("on",o===p)});apply()}});
+var hh=(location.hash||"").slice(1);pills.forEach(function(p){if(hh&&p.dataset.f===hh)p.click()});
 document.getElementById("dq").addEventListener("input",function(e){q=e.target.value.trim().toLowerCase().replace(/^rd[\s-]*/,"");apply()});
 var lb=document.getElementById("lb"),vis=[],idx=0;
 function show(i){idx=(i+vis.length)%vis.length;var c=vis[idx],code=c.dataset.code,lab=c.dataset.label,im=document.getElementById("lbimg");
@@ -37,7 +38,7 @@ document.addEventListener("keydown",function(e){if(!lb.open)return;if(e.key==="A
 (function(){
 var box=document.getElementById("hdoor");if(!box)return;
 var imgs=[].slice.call(box.querySelectorAll(".hd")),tabs=[].slice.call(document.querySelectorAll(".dtab")),nm=document.getElementById("fname"),nt=document.getElementById("fnote"),cur=0,t;
-function go(i){cur=i;imgs.forEach(function(m,j){m.classList.toggle("on",j===i)});tabs.forEach(function(b,j){b.classList.toggle("on",j===i);b.setAttribute("aria-selected",j===i?"true":"false")});nm.textContent=tabs[i].textContent;nt.textContent="Catalogue design "+tabs[i].dataset.code}
+function go(i){cur=i;imgs.forEach(function(m,j){m.classList.toggle("on",j===i)});tabs.forEach(function(b,j){b.classList.toggle("on",j===i);b.setAttribute("aria-selected",j===i?"true":"false")});nm.textContent=tabs[i].textContent;nt.textContent=tabs[i].dataset.code?"Catalogue design "+tabs[i].dataset.code:"Plain, smooth and strong"}
 function auto(){clearInterval(t);if(!matchMedia("(prefers-reduced-motion:reduce)").matches)t=setInterval(function(){go((cur+1)%imgs.length)},4500)}
 tabs.forEach(function(b,i){b.onclick=function(){go(i);auto()}});
 var st=box.parentNode;st.addEventListener("mouseenter",function(){clearInterval(t)});st.addEventListener("mouseleave",auto);
